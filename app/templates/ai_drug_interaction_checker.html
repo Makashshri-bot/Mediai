@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4" id="drugInteractionPage">
+<div id="loadingSpinner" class="text-center d-none mt-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">MediAI is thinking...</p>
+</div>
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white">
+            <h3>
+                <i class="fa-solid fa-pills"></i>
+                AI Drug Interaction Checker
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div id="drugAlert"></div>
+
+            <form id="drugInteractionForm">
+
+                <div class="mb-3">
+                    <label class="form-label">Medicine 1</label>
+                    <input
+                        type="text"
+                        id="drug1Input"
+                        class="form-control"
+                        placeholder="Example: Warfarin"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Medicine 2</label>
+                    <input
+                        type="text"
+                        id="drug2Input"
+                        class="form-control"
+                        placeholder="Example: Aspirin"
+                        required>
+                </div>
+
+                <button
+    id="analyzeBtn"
+    type="submit"
+    class="btn btn-primary">
+                    Check Interaction
+                </button>
+
+            </form>
+
+            <div
+                class="card mt-4 d-none"
+                id="resultSection">
+
+                <div class="card-body">
+
+    <h4>Interaction Result</h4>
+
+    <p>
+        <strong>Medicine 1:</strong>
+        <span id="resultDrug1"></span>
+    </p>
+
+    <p>
+        <strong>Medicine 2:</strong>
+        <span id="resultDrug2"></span>
+    </p>
+
+    <hr>
+
+    <div id="resultRiskBadge"></div>
+
+    <br>
+
+    <h5>Explanation</h5>
+
+    <p id="resultExplanation"></p>
+
+    <div id="resultSymptoms"></div>
+
+    <div id="resultRecommendation"></div>
+
+    <div
+        id="resultDisclaimer"
+        class="alert alert-warning mt-3">
+    </div>
+
+    <button
+        id="checkAgainBtn"
+        class="btn btn-secondary me-2">
+        Check Again
+    </button>
+
+    <button
+        id="consultBtn"
+        class="btn btn-success">
+        Consult Doctor
+    </button>
+
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

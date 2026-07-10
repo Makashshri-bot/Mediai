@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="aiAppointmentAssistantPage">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 mb-1">AI Appointment Assistant</h1>
+      <p class="text-muted mb-0">Describe symptoms and get a suggested doctor, department, and priority.</p>
+    </div>
+  </div>
+  <div id="aiLoading" class="text-center d-none mt-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">MediAI is thinking...</p>
+</div>
+
+  <div id="aiAppointmentAssistantAlert"></div>
+
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+    <form id="appointmentAssistantForm">
+      <div class="mb-3"><label class="form-label">Describe symptoms</label><textarea id="assistantSymptoms" class="form-control" rows="4" placeholder="Enter symptoms or concerns" required></textarea></div>
+      <div class="text-end"><button type="submit" class="btn btn-primary rounded-pill">Get Recommendation</button></div>
+    </form>
+    <div
+id="appointmentLoading"
+class="text-center d-none my-3">
+
+<div class="spinner-border text-primary"></div>
+
+<p class="mt-2">
+Analyzing Symptoms...
+</p>
+
+</div>
+    <div id="assistantResult" class="mt-4 d-none">
+      <h5>Recommendation</h5>
+      <div class="card rounded-4 p-3 bg-light" id="assistantContent"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-card rounded-5 p-5 mb-4">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <p class="text-primary fw-semibold mb-2"><i class="fa-solid fa-shield-heart"></i> AI Powered Hospital Management</p>
+      <h1 class="display-5 fw-bold mb-3">Simple care for every patient and clinician.</h1>
+      <p class="lead text-muted mb-4">MediAI brings appointments, reports, beds, medicines, and smart help into one calm and easy dashboard.</p>
+      <div class="d-flex gap-3 flex-wrap">
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg rounded-pill">Book Appointment</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg rounded-pill">Login</a>
+      </div>
+    </div>
+    <div class="col-lg-5 text-center">
+      <div class="hero-illustration p-4 rounded-4">
+        <i class="fa-solid fa-stethoscope fa-6x text-primary"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-md-3"><div class="card border-0 shadow-sm rounded-4 p-3"><h5>Doctors</h5><p class="display-6 fw-bold text-primary">{{ stats.doctors }}</p></div></div>
+  <div class="col-md-3"><div class="card border-0 shadow-sm rounded-4 p-3"><h5>Patients</h5><p class="display-6 fw-bold text-primary">{{ stats.patients }}</p></div></div>
+  <div class="col-md-3"><div class="card border-0 shadow-sm rounded-4 p-3"><h5>Departments</h5><p class="display-6 fw-bold text-primary">{{ stats.departments }}</p></div></div>
+  <div class="col-md-3"><div class="card border-0 shadow-sm rounded-4 p-3"><h5>Beds</h5><p class="display-6 fw-bold text-primary">{{ stats.beds }}</p></div></div>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3 class="mb-3">Our Services</h3>
+      <div class="row g-3">
+        <div class="col-md-6"><div class="service-card p-3 rounded-4"><i class="fa-solid fa-calendar-check text-primary"></i><h5>Appointments</h5><p>Easy booking and status updates.</p></div></div>
+        <div class="col-md-6"><div class="service-card p-3 rounded-4"><i class="fa-solid fa-file-medical text-primary"></i><h5>Reports</h5><p>Upload and summarize health records.</p></div></div>
+        <div class="col-md-6"><div class="service-card p-3 rounded-4"><i class="fa-solid fa-pills text-primary"></i><h5>Pharmacy</h5><p>Medicine inventory and reminders.</p></div></div>
+        <div class="col-md-6"><div class="service-card p-3 rounded-4"><i class="fa-solid fa-robot text-primary"></i><h5>AI Assistant</h5><p>Smart help for appointments and FAQs.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3 class="mb-3">Emergency Contact</h3>
+      <p class="mb-2"><i class="fa-solid fa-phone"></i> 911</p>
+      <p class="mb-2"><i class="fa-solid fa-hospital"></i> 24/7 Emergency Center</p>
+      <p><i class="fa-solid fa-envelope"></i> emergency@mediai.com</p>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3 class="mb-3">Departments</h3>
+      <ul class="list-group list-group-flush">
+        {% for dept in departments %}
+        <li class="list-group-item px-0"><strong>{{ dept.name }}</strong> — {{ dept.description }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3 class="mb-3">Doctors</h3>
+      <ul class="list-group list-group-flush">
+        {% for doctor in doctors %}
+        <li class="list-group-item px-0"><strong>{{ doctor.user.full_name }}</strong> · {{ doctor.specialty }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="aiReportSummarizerPage">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 mb-1">Report Summarizer</h1>
+      <p class="text-muted mb-0">Upload a report or paste text to generate a simple AI summary.</p>
+    </div>
+  </div>
+  <div id="reportLoading" class="text-center d-none">
+    <div class="spinner-border text-primary"></div>
+</div>
+  <div id="aiReportSummarizerAlert"></div>
+ 
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+    <form id="reportSummarizerForm" class="row g-4">
+      <div class="col-12"><label class="form-label">Report text</label><textarea id="reportText" class="form-control" rows="5" placeholder="Paste report text here"></textarea></div>
+      <div class="col-md-6"><label class="form-label">Upload PDF</label><input id="reportFile" type="file" class="form-control" accept="application/pdf"></div>
+      <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">Summarize Report</button></div>
+    </form>
+    <div id="reportSummaryResult" class="mt-4 d-none">
+      <h5>AI Summary</h5>
+      <div class="card rounded-4 p-3 bg-light" id="reportSummaryContent"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

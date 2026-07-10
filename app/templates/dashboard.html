@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-3">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h4 class="mb-3">{{ user.full_name }}</h4>
+      <p class="text-muted mb-1"><i class="fa-solid fa-user-tag"></i> {{ role_name|title }}</p>
+      <p class="text-muted mb-0"><i class="fa-solid fa-envelope"></i> {{ user.email }}</p>
+      <button class="btn btn-outline-primary rounded-pill mt-3" id="voiceAssistantBtn"><i class="fa-solid fa-microphone"></i> Voice Assistant</button>
+      <div id="voiceOutput" class="mt-3 small text-muted"></div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="row g-4 mb-4">
+      <div class="col-md-3"><div class="card rounded-4 shadow-sm border-0 p-3 text-center"><h6>Doctors</h6><div class="display-6 text-primary" data-stat="doctors">{{ stats.doctors }}</div></div></div>
+      <div class="col-md-3"><div class="card rounded-4 shadow-sm border-0 p-3 text-center"><h6>Patients</h6><div class="display-6 text-primary" data-stat="patients">{{ stats.patients }}</div></div></div>
+      <div class="col-md-3"><div class="card rounded-4 shadow-sm border-0 p-3 text-center"><h6>Appointments</h6><div class="display-6 text-primary" data-stat="appointments">{{ stats.appointments }}</div></div></div>
+      <div class="col-md-3"><div class="card rounded-4 shadow-sm border-0 p-3 text-center"><h6>Beds</h6><div class="display-6 text-primary" data-stat="beds">{{ stats.beds }}</div></div></div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+      <canvas id="dashboardChart" height="120"></canvas>
+    </div>
+
+    <div class="row g-4">
+      {% if role_name in ['admin','doctor','receptionist','patient'] %}
+      <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h5>Book Appointment</h5>
+          <form method="post" action="{{ url_for('main.create_appointment') }}">
+            <div class="mb-3"><label class="form-label">Doctor</label><select class="form-select" name="doctor_id">{% for doctor in doctors %}<option value="{{ doctor.id }}">{{ doctor.user.full_name }}</option>{% endfor %}</select></div>
+            <div class="mb-3"><label class="form-label">Department</label><select class="form-select" name="department_id">{% for department in departments %}<option value="{{ department.id }}">{{ department.name }}</option>{% endfor %}</select></div>
+            <div class="mb-3"><label class="form-label">Date</label><input type="datetime-local" class="form-control" name="appointment_date" required></div>
+            <div class="mb-3"><label class="form-label">Symptoms</label><textarea class="form-control" name="symptoms"></textarea></div>
+            <div class="mb-3"><label class="form-label">Priority</label><select class="form-select" name="priority"><option value="normal">Normal</option><option value="urgent">Urgent</option></select></div>
+            <button class="btn btn-primary rounded-pill">Book</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if role_name in ['admin','doctor'] %}
+      <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h5>Medical Report</h5>
+          <form method="post" action="{{ url_for('main.create_report') }}">
+            <div class="mb-3"><label class="form-label">Patient ID</label><input type="number" class="form-control" name="patient_id" required></div>
+            <div class="mb-3"><label class="form-label">Title</label><input type="text" class="form-control" name="title" required></div>
+            <div class="mb-3"><label class="form-label">Summary</label><textarea class="form-control" name="summary"></textarea></div>
+            <div class="mb-3"><label class="form-label">Content</label><textarea class="form-control" name="content"></textarea></div>
+            <button class="btn btn-primary rounded-pill">Save Report</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if role_name in ['admin','doctor'] %}
+      <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h5>Prescription</h5>
+          <form method="post" action="{{ url_for('main.create_prescription') }}">
+            <div class="mb-3"><label class="form-label">Appointment ID</label><input type="number" class="form-control" name="appointment_id" required></div>
+            <div class="mb-3"><label class="form-label">Patient ID</label><input type="number" class="form-control" name="patient_id" required></div>
+            <div class="mb-3"><label class="form-label">Medicine</label><input type="text" class="form-control" name="medicine_name" required></div>
+            <div class="mb-3"><label class="form-label">Dosage</label><input type="text" class="form-control" name="dosage"></div>
+            <div class="mb-3"><label class="form-label">Instructions</label><textarea class="form-control" name="instructions"></textarea></div>
+            <button class="btn btn-primary rounded-pill">Create Prescription</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if role_name == 'admin' %}
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Create Doctor</h5><form method="post" action="{{ url_for('main.create_doctor') }}"><div class="mb-2"><input class="form-control" name="username" placeholder="Username" required></div><div class="mb-2"><input class="form-control" name="email" placeholder="Email" required></div><div class="mb-2"><input class="form-control" name="password" placeholder="Password" value="Welcome@123"></div><div class="mb-2"><input class="form-control" name="full_name" placeholder="Full Name" required></div><div class="mb-2"><input class="form-control" name="specialty" placeholder="Specialty"></div><div class="mb-2"><input class="form-control" name="license_number" placeholder="License Number"></div><div class="mb-2"><textarea class="form-control" name="bio" placeholder="Bio"></textarea></div><button class="btn btn-primary rounded-pill">Create</button></form></div></div>
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Create Department</h5><form method="post" action="{{ url_for('main.create_department') }}"><div class="mb-2"><input class="form-control" name="name" placeholder="Department Name" required></div><div class="mb-2"><textarea class="form-control" name="description" placeholder="Description"></textarea></div><div class="mb-2"><input class="form-control" name="bed_count" type="number" placeholder="Bed Count"></div><button class="btn btn-primary rounded-pill">Create</button></form></div></div>
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Create Bed</h5><form method="post" action="{{ url_for('main.create_bed') }}"><div class="mb-2"><input class="form-control" name="bed_number" placeholder="Bed Number" required></div><div class="mb-2"><input class="form-control" name="room_number" placeholder="Room Number"></div><div class="mb-2"><input class="form-control" name="department_id" type="number" placeholder="Department ID" required></div><div class="mb-2"><select class="form-select" name="status"><option value="available">Available</option><option value="occupied">Occupied</option><option value="reserved">Reserved</option><option value="cleaning">Cleaning</option><option value="maintenance">Maintenance</option></select></div><button class="btn btn-primary rounded-pill">Create</button></form></div></div>
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Create Medicine</h5><form method="post" action="{{ url_for('main.create_medicine') }}"><div class="mb-2"><input class="form-control" name="name" placeholder="Medicine Name" required></div><div class="mb-2"><input class="form-control" name="generic_name" placeholder="Generic Name"></div><div class="mb-2"><input class="form-control" name="category" placeholder="Category"></div><div class="mb-2"><input class="form-control" name="stock_quantity" type="number" placeholder="Stock Quantity"></div><div class="mb-2"><input class="form-control" name="unit_price" type="number" step="0.01" placeholder="Unit Price"></div><div class="mb-2"><input class="form-control" name="location" placeholder="Location"></div><div class="mb-2"><input class="form-control" name="manufacturer" placeholder="Manufacturer"></div><button class="btn btn-primary rounded-pill">Create</button></form></div></div>
+      {% endif %}
+
+      {% if role_name in ['admin','receptionist'] %}
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Emergency Case</h5><form method="post" action="{{ url_for('main.create_emergency') }}"><div class="mb-2"><input class="form-control" name="patient_id" type="number" placeholder="Patient ID" required></div><div class="mb-2"><select class="form-select" name="severity"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div><div class="mb-2"><textarea class="form-control" name="description" placeholder="Description"></textarea></div><button class="btn btn-danger rounded-pill">Log Case</button></form></div></div>
+      {% endif %}
+
+      {% if role_name == 'nurse' %}
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Bed Dashboard</h5><ul class="list-group list-group-flush">{% for bed in beds %}<li class="list-group-item px-0"><strong>{{ bed.bed_number }}</strong> — {{ bed.status }}</li>{% endfor %}</ul></div></div>
+      {% endif %}
+
+      {% if role_name == 'pharmacist' %}
+      <div class="col-lg-6"><div class="card shadow-sm border-0 rounded-4 p-4"><h5>Medicine Inventory</h5><ul class="list-group list-group-flush">{% for medicine in medicines %}<li class="list-group-item px-0"><strong>{{ medicine.name }}</strong> · stock {{ medicine.stock_quantity }}</li>{% endfor %}</ul></div></div>
+      {% endif %}
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4 mt-4">
+      <h5>Recent Activity</h5>
+      <ul class="list-group list-group-flush">
+        {% for notification in notifications %}
+        <li class="list-group-item px-0"><strong>{{ notification.title }}</strong> — {{ notification.message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="aiSymptomCheckerPage" class="py-4">
+  <div class="container">
+    <!-- Header -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="d-flex align-items-center mb-3">
+          <i class="fa-solid fa-stethoscope text-primary" style="font-size: 2rem;"></i>
+          <h1 class="ms-3 mb-0">AI Symptom Checker</h1>
+        </div>
+        <p class="text-muted fs-5">
+          Get hospital triage guidance based on your symptoms. 
+          <strong>⚠️ This is NOT a medical diagnosis.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <!-- Alert Container -->
+        <div id="symptomCheckerAlert"></div>
+
+        <!-- Input Section -->
+        <div class="card rounded-4 shadow-sm mb-4 p-4">
+          <h4 class="mb-3"><i class="fa-solid fa-pen-to-square text-primary"></i> Describe Your Symptoms</h4>
+          
+          <form id="symptomCheckerForm">
+            <div class="mb-4">
+              <label class="form-label fw-semibold">What symptoms are you experiencing?</label>
+              <textarea
+                id="symptomInput"
+                class="form-control rounded-3"
+                rows="5"
+                placeholder="Example: I have chest pain and shortness of breath, especially when I walk. It started 2 hours ago..."
+                required
+              ></textarea>
+              <small class="text-muted d-block mt-2">
+                Provide as much detail as possible (location, duration, severity, triggers)
+              </small>
+            </div>
+
+            <button type="submit" id="analyzeBtn" class="btn btn-primary btn-lg rounded-3 w-100">
+              <i class="fa-solid fa-magnifying-glass me-2"></i> Analyze Symptoms
+            </button>
+          </form>
+
+          <!-- Loading Spinner -->
+          <div id="loadingSpinner" class="d-none text-center mt-4">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Analyzing...</span>
+            </div>
+            <p class="text-muted">Analyzing your symptoms with AI...</p>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="d-none">
+          <!-- Main Result Card -->
+          <div class="card rounded-4 shadow-lg mb-4 border-0 p-5">
+            <div class="row g-4">
+              <!-- Department Recommendation -->
+              <div class="col-md-6">
+                <div class="text-center">
+                  <div class="mb-3">
+                    <i class="fa-solid fa-hospital text-primary" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h4 class="mb-1">Recommended Department</h4>
+                  <h2 class="text-primary fw-bold mb-3" id="resultDepartment">-</h2>
+                  <p class="text-muted" id="resultSummary">-</p>
+                </div>
+              </div>
+
+              <!-- Doctor Recommendation -->
+              <div class="col-md-6">
+                <div class="text-center">
+                  <div class="mb-3">
+                    <i class="fa-solid fa-user-doctor text-success" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h4 class="mb-1">Recommended Doctor</h4>
+                  <h2 class="text-success fw-bold mb-3" id="resultDoctor">-</h2>
+                  <p class="text-muted" id="resultSpecialty">-</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="aiLoading" class="text-center d-none mt-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">MediAI is thinking...</p>
+</div>
+
+          <!-- Urgency & Priority -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card rounded-4 p-4 h-100 border-0 shadow-sm">
+                <h5 class="mb-3"><i class="fa-solid fa-exclamation-triangle text-warning"></i> Urgency Level</h5>
+                <div id="resultUrgencyBadge"></div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card rounded-4 p-4 h-100 border-0 shadow-sm">
+                <h5 class="mb-3"><i class="fa-solid fa-flag text-danger"></i> Priority</h5>
+                <div id="resultPriorityBadge"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precautions -->
+          <div class="card rounded-4 p-4 border-0 shadow-sm mb-4">
+            <h5 class="mb-3"><i class="fa-solid fa-shield text-info"></i> Immediate Precautions</h5>
+            <ul id="resultPrecautions" class="list-group list-group-flush">
+              <li class="list-group-item">-</li>
+            </ul>
+          </div>
+
+          <!-- Disclaimer -->
+          <div class="alert alert-warning rounded-4" role="alert">
+            <h5 class="alert-heading"><i class="fa-solid fa-circle-info"></i> Important Disclaimer</h5>
+            <p id="resultDisclaimer" class="mb-0">-</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="row g-3">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-primary btn-lg rounded-3 w-100" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                <i class="fa-solid fa-calendar-plus me-2"></i> Book Appointment
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-outline-secondary btn-lg rounded-3 w-100" onclick="location.reload()">
+                <i class="fa-solid fa-rotate-right me-2"></i> Check Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Book Appointment Modal (optional - if you want inline booking) -->
+<div class="modal fade" id="bookAppointmentModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0">
+        <div id="aiLoading" class="text-center d-none mt-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">MediAI is thinking...</p>
+</div>
+        <h5 class="modal-title"><i class="fa-solid fa-calendar-plus"></i> Book Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">Redirecting to appointments page to book with the recommended doctor...</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+        <a href="{{ url_for('views.appointments') }}" class="btn btn-primary rounded-3">Go to Appointments</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Load the specialized JavaScript for this page -->
+<script src="{{ url_for('static', filename='js/ai_symptom_checker.js') }}"></script>
+{% endblock %}

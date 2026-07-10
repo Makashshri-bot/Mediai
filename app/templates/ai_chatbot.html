@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="aiChatbotPage">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 mb-1">AI Chatbot</h1>
+      <p class="text-muted mb-0">Ask the MediAI assistant questions about appointments, services, and medicine guidance.</p>
+    </div>
+  </div>
+<div id="aiLoading" class="text-center d-none mt-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">MediAI is thinking...</p>
+</div>
+  <div id="aiChatbotAlert"></div>
+  <button
+id="micBtn"
+class="btn btn-outline-secondary">
+
+🎤
+
+</button>
+
+  <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+    <div id="chatHistory" class="d-flex flex-column gap-3"></div>
+    <div class="mt-4">
+      <form id="chatbotForm" class="row g-3">
+        <div class="col-12"><textarea id="chatbotMessage" class="form-control" rows="3" placeholder="Type your question here"></textarea></div>
+        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill"><i class="fa-solid fa-paper-plane me-2"></i>Send</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

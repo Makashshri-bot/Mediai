@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="bedsPage">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 mb-1">Beds</h1>
+      <p class="text-muted mb-0">Track bed availability and ward status in real time.</p>
+    </div>
+  </div>
+
+  <div id="bedsAlert"></div>
+
+  <div class="card shadow-sm border-0 rounded-4 p-4">
+    <div id="bedsLoading" class="text-center py-5"><span class="spinner-border text-primary"></span> Loading beds...</div>
+    <div id="bedsTableWrapper" class="table-responsive d-none">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr><th>Bed</th><th>Department</th><th>Room</th><th>Status</th></tr>
+        </thead>
+        <tbody id="bedsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

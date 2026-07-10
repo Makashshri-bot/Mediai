@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="appointmentsPage">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+    <div>
+      <h1 class="h3 mb-1">Appointments</h1>
+      <p class="text-muted mb-0">Manage bookings, view appointment history and review status updates.</p>
+    </div>
+    <a href="{{ url_for('views.ai_appointment_assistant') }}" class="btn btn-outline-primary rounded-pill"><i class="fa-solid fa-robot me-2"></i>AI Appointment Assistant</a>
+  </div>
+
+  <div id="appointmentsAlert"></div>
+
+  <div class="row g-4">
+    <div class="col-xl-4">
+      <div class="card shadow-sm border-0 rounded-4 p-4">
+        <h5 class="mb-3">Book Appointment</h5>
+        <form id="appointmentForm">
+          <div class="mb-3"><label class="form-label">Doctor</label><select id="doctorSelect" class="form-select" required><option value="">Loading doctors...</option></select></div>
+          <div class="mb-3"><label class="form-label">Department</label><select id="departmentSelect" class="form-select" required><option value="">Loading departments...</option></select></div>
+          <div class="mb-3"><label class="form-label">Date & time</label><input id="appointmentDate" type="datetime-local" class="form-control" required></div>
+          <div class="mb-3"><label class="form-label">Symptoms</label><textarea id="appointmentSymptoms" class="form-control" rows="3"></textarea></div>
+          <div class="mb-3"><label class="form-label">Priority</label><select id="appointmentPriority" class="form-select"><option value="normal">Normal</option><option value="urgent">Urgent</option></select></div>
+          <button type="submit" class="btn btn-primary rounded-pill w-100">Book Appointment</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-xl-8">
+      <div class="card shadow-sm border-0 rounded-4 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Appointment History</h5>
+          <span class="badge bg-primary">Recent</span>
+        </div>
+        <div id="appointmentsLoading" class="text-center py-5"><span class="spinner-border text-primary"></span> Loading appointments...</div>
+        <div id="appointmentsTableWrapper" class="table-responsive d-none">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody id="appointmentsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3>Profile</h3>
+      <p><strong>Name:</strong> {{ user.full_name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Role:</strong> {{ user.role.name }}</p>
+      <p><strong>Phone:</strong> {{ user.phone }}</p>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h3>Change Password</h3>
+      <form method="post" action="{{ url_for('main.change_password') }}">
+        <div class="mb-3"><label class="form-label">Current Password</label><input type="password" class="form-control" name="old_password" required /></div>
+        <div class="mb-3"><label class="form-label">New Password</label><input type="password" class="form-control" name="new_password" required /></div>
+        <button class="btn btn-primary rounded-pill">Update</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+body {
+  background: linear-gradient(120deg, #f7fbff 0%, #eef7ff 100%);
+  color: #23374d;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #ffffff 0%, #ebf7ff 100%);
+  box-shadow: 0 15px 40px rgba(43, 104, 190, 0.12);
+}
+
+.hero-illustration {
+  background: #eaf6ff;
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+}
+
+.card {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(13, 110, 253, 0.12);
+}
+
+.service-card {
+  background: #f9fcff;
+  border: 1px solid #e7f2ff;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2f80ed 0%, #56ccf2 100%);
+  border: 0;
+}
