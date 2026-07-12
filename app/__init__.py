@@ -56,9 +56,7 @@ def create_app():
         return {"current_user": user}
     with app.app_context():
         db.create_all()
-        if app.config.get("DEBUG", False):
-            seed_data(app)
-
+        seed_data(app)
     return app
 
 
